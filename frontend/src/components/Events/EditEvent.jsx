@@ -15,10 +15,10 @@ export default function EditEvent() {
   return (
     <Modal onClose={handleClose}>
       <EventForm inputData={null} onSubmit={handleSubmit}>
-        <Link to="../" className="button-text">
+        <Link to='../' className='button-text'>
           Cancel
         </Link>
-        <button type="submit" className="button">
+        <button type='submit' className='button'>
           Update
         </button>
       </EventForm>
