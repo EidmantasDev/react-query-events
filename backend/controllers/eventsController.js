@@ -137,10 +137,7 @@ async function deleteEvent(req, res) {
   events.splice(eventIndex, 1);
 
   await fs.writeFile('./data/events.json', JSON.stringify(events));
-
-  setTimeout(() => {
-    res.json({ message: 'Event deleted' });
-  }, 1000);
+  res.json({ message: 'Event deleted' });
 }
 
 export { getEvents, getEventById, createEvent, updateEvent, deleteEvent };
