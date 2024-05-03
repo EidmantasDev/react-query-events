@@ -1,6 +1,6 @@
 # React Query Events App
 
-Small website to demonstrate Tanstack Query (useQuery, useMutation) functionality, React core features
+Small website to demonstrate Tanstack Query functionality, React core features
 
 ## Run Locally
 
