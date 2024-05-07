@@ -117,9 +117,7 @@ async function updateEvent(req, res) {
 
   await fs.writeFile('./data/events.json', JSON.stringify(events));
 
-  setTimeout(() => {
-    res.json({ event: events[eventIndex] });
-  }, 1000);
+  res.json({ event: events[eventIndex] });
 }
 
 async function deleteEvent(req, res) {
