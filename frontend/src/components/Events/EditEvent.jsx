@@ -1,10 +1,20 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Modal from '../UI/Modal.jsx';
 import EventForm from './EventForm.jsx';
+import { useQuery } from '@tanstack/react-query';
+import { fetchEvent } from '../../util/http.js';
+import LoadingIndicator from '../UI/LoadingIndicator.jsx';
+import ErrorBlock from '../UI/ErrorBlock.jsx';
 
 export default function EditEvent() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['events', id],
+    queryFn: ({ signal }) => fetchEvent({ signal, id }),
+  });
 
   function handleSubmit(formData) {}
 
@@ -12,9 +22,36 @@ export default function EditEvent() {
     navigate('../');
   }
 
-  return (
-    <Modal onClose={handleClose}>
-      <EventForm inputData={null} onSubmit={handleSubmit}>
+  let content;
+
+  if (isPending) {
+    content = (
+      <div className='center'>
+        <LoadingIndicator />
+      </div>
+    );
+  }
+
+  if (isError) {
+    content = (
+      <>
+        <ErrorBlock
+          title='Failed to load event'
+          message={
+            error.info?.message ||
+            'Failed to load event. Please check your inputs and try again later.'
+          }
+        />
+        <div className='form-action'>
+          <Link to='../' className='button'></Link>
+        </div>
+      </>
+    );
+  }
+
+  if (data) {
+    content = (
+      <EventForm inputData={data} onSubmit={handleSubmit}>
         <Link to='../' className='button-text'>
           Cancel
         </Link>
@@ -22,6 +59,8 @@ export default function EditEvent() {
           Update
         </button>
       </EventForm>
-    </Modal>
-  );
+    );
+  }
+
+  return <Modal onClose={handleClose}>{content}</Modal>;
 }
